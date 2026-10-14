@@ -1,0 +1,3 @@
+#!/bin/sh
+export PYTHONPATH=/app/share/system-monitor/pkgs${PYTHONPATH:+:$PYTHONPATH}
+exec python3 /app/share/system-monitor/system_monitor.py "$@"

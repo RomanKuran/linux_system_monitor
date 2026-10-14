@@ -1,0 +1,37 @@
+# Flatpak-маніфест для «Диспетчера завдань».
+# Збірка (з кореня репозиторію):
+#   flatpak-builder --user --install --install-deps-from=flathub \
+#       --disable-rofiles-fuse --repo=repo builddir org.example.SystemMonitor.yml
+# Бандл:
+#   flatpak build-bundle repo SystemMonitor.flatpak org.example.SystemMonitor
+app-id: org.example.SystemMonitor
+runtime: org.gnome.Platform
+runtime-version: '51'
+sdk: org.gnome.Sdk
+command: system-monitor
+
+finish-args:
+  - --share=network
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  - --filesystem=host:ro
+  - --filesystem=xdg-pictures
+
+modules:
+  - name: system-monitor
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 system_monitor.py /app/share/system-monitor/system_monitor.py
+      - mkdir -p /app/share/system-monitor/pkgs
+      - python3 -m zipfile -e psutil.whl /app/share/system-monitor/pkgs/
+      - install -Dm755 system-monitor /app/bin/system-monitor
+    sources:
+      - type: file
+        path: system_monitor.py
+      - type: file
+        url: https://files.pythonhosted.org/packages/b5/70/5d8df3b09e25bce090399cf48e452d25c935ab72dad19406c77f4e828045/psutil-7.2.2-cp36-abi3-manylinux2010_x86_64.manylinux_2_12_x86_64.manylinux_2_28_x86_64.whl
+        sha256: 076a2d2f923fd4821644f5ba89f059523da90dc9014e85f8e45a5774ca5bc6f9
+        dest-filename: psutil.whl
+      - type: file
+        path: flatpak/system-monitor

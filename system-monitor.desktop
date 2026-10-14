@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Диспетчер завдань
+Name[en]=System Monitor
+Comment=Монітор навантаження системи (CPU, RAM, процеси)
+Exec=system-monitor
+Icon=utilities-system-monitor
+Terminal=false
+Categories=System;Monitor;
+Keywords=monitor;task;process;cpu;ram;
